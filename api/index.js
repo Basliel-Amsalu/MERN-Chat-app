@@ -4,6 +4,7 @@ const User = require("./models/User");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const userRoutes = require("./routes/userRoutes");
 
 dotenv.config();
 
@@ -15,6 +16,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use(cors());
+
+require("./connection");
+
+app.use("/users", userRoutes);
 
 const server = require("http").createServer(app);
 const PORT = 5001;
