@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 import React, { useContext, useState } from "react";
-import { Button, Form, Container, Col, Row } from "react-bootstrap";
+import { Button, Form, Container, Col, Row, Spinner } from "react-bootstrap";
 import "./Login.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useLoginUserMutation } from "../services/appApi";
@@ -44,6 +44,7 @@ const Login = () => {
         >
           <Form onSubmit={handleLogin} style={{ width: "80%", maxWidth: 500 }}>
             <Form.Group className='mb-3' controlId='formBasicEmail'>
+              {error && <p className='alert alert-danger'>{error.data}</p>}
               <Form.Label>Email address</Form.Label>
               <Form.Control
                 type='email'
@@ -71,7 +72,7 @@ const Login = () => {
             </Form.Group>
 
             <Button variant='primary' type='submit'>
-              Login
+              {isLoading ? <Spinner animation='grow' /> : "Login"}
             </Button>
             <div className='py-4'>
               <p className='text-center'>
