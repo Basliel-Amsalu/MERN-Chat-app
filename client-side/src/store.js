@@ -22,7 +22,7 @@ const reducer = combineReducers({
 const persistConfig = {
   key: "root",
   storage,
-  blackList: [appApi.reducerPath],
+  blacklist: [appApi.reducerPath],
 };
 
 const persistedReducer = persistReducer(persistConfig, reducer);
@@ -32,12 +32,12 @@ const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       thunk: {
-        extraArgument: appApi.middleware,
+        extraArgument: appApi,
       },
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }),
+    }).concat(appApi.middleware),
 });
 
 export default store;

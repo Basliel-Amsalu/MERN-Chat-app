@@ -2,8 +2,9 @@
 import React, { useState } from "react";
 import { Button, Form, Container, Col, Row } from "react-bootstrap";
 import "./Signup.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import bot from "../assets/bot.jpeg";
+import { useSignupUserMutation } from "../services/appApi";
 
 const Signup = () => {
   const [formdata, setFormData] = useState({
@@ -17,6 +18,9 @@ const Signup = () => {
     uploadingImg: false,
     imagePreview: null,
   });
+
+  const navigate = useNavigate();
+  const [signupUser, { isLoading, error }] = useSignupUserMutation();
 
   const validateImg = (e) => {
     const file = e.target.files[0];
@@ -58,6 +62,12 @@ const Signup = () => {
     const url = await uploadImage(image);
     const userObj = { imageURL: url, ...formdata };
     console.log(userObj);
+    signupUser(userObj).then(({ data }) => {
+      if (data) {
+        console.log(data);
+        navigate("/chat");
+      }
+    });
   };
 
   const handleChange = (e) => {

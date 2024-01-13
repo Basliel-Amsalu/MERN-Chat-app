@@ -10,7 +10,7 @@ const UserSchema = new mongoose.Schema(
     },
     email: {
       type: String,
-      lowecase: true,
+      lowercase: true,
       unique: true,
       required: [true, "can't be blank"],
       index: true,
@@ -29,8 +29,7 @@ const UserSchema = new mongoose.Schema(
       default: "online",
     },
   },
-  { timestamps: true },
-  { minimize: false }
+  { timestamps: true, minimize: false } 
 );
 
 UserSchema.pre("save", function (next) {

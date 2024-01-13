@@ -3,6 +3,7 @@ const router = require("express").Router();
 const User = require("../models/User");
 
 router.post("/", async (req, res) => {
+  console.log("here");
   try {
     const { name, email, password, imageURL } = req.body;
     const user = await User.create({
@@ -11,10 +12,7 @@ router.post("/", async (req, res) => {
       password,
       picture: imageURL,
     });
-    res.status(201).json({
-      id: user.id,
-      message: "success!",
-    });
+    res.status(201).json(user);
   } catch (err) {
     let message;
     if (err.name === "MongoError" && err.code === 11000) {
@@ -33,13 +31,10 @@ router.post("/login", async (req, res) => {
     const user = await User.findByCredentials(email, password);
     user.status = "online";
     await user.save();
-    res.status(200).json({
-      user,
-      message: "success!",
-    });
+    res.status(200).json(user);
   } catch (error) {
     res.status(400).json({
-      message: e.message,
+      message: error.message,
     });
   }
 });

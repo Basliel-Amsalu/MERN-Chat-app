@@ -1,18 +1,30 @@
 /* eslint-disable react/no-unescaped-entities */
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Button, Form, Container, Col, Row } from "react-bootstrap";
 import "./Login.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useLoginUserMutation } from "../services/appApi";
+import { AppContext } from "../appContext/context";
 
 const Login = () => {
   const [formdata, setFormData] = useState({
     email: "",
     password: "",
   });
+  const [loginUser, { isLoading, error }] = useLoginUserMutation();
+  const navigate = useNavigate();
+  const { socket } = useContext(AppContext);
 
   const handleLogin = async (e) => {
     e.preventDefault();
     console.log(formdata);
+    loginUser(formdata).then(({ data }) => {
+      if (data) {
+        console.log(data);
+        socket.emit("new-user");
+        navigate("/chat");
+      }
+    });
   };
 
   const handleChange = (e) => {
